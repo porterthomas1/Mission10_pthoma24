@@ -43,6 +43,8 @@ namespace Mission9_pthoma24
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseStaticFiles();
             }
 
             app.UseRouting();
