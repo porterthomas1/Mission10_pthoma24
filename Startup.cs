@@ -35,6 +35,11 @@ namespace Mission9_pthoma24
            });
 
             services.AddScoped<IBookstoreRepository, EFBookstoreRepository>();
+
+            services.AddRazorPages(); // Enables use of razor pages (start)
+
+            services.AddDistributedMemoryCache(); // Sets up the ability for the user to use a session everytime they access the site (start)
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,14 +49,38 @@ namespace Mission9_pthoma24
             {
                 app.UseDeveloperExceptionPage();
 
-                app.UseStaticFiles();
             }
-
+            
+            // Corresponds to the wwwroot
+            app.UseStaticFiles();
+            app.UseSession(); // Sets up the ability for the user to use a session everytime they access the site (end)
             app.UseRouting();
 
+            // Controls how the end navigation parameters of the url appear, order matters (not like css, like an if-else statement)
             app.UseEndpoints(endpoints =>
             {
+                // If a type and a page number is specified:
+                endpoints.MapControllerRoute(
+                    "categorypage",
+                    "{bookCategory}/Page{pageNum}",
+                    new { Controller = "Home", action = "Index" });
+
+                // specifies the url to return the pageNum integer rather than the default syntax with a question mark
+                endpoints.MapControllerRoute(
+                    "Paging",
+                    "Page{pageNum}",
+                    new { Controller = "Home", action = "Index", pageNum = 1 });
+
+                // If only a type is specified:
+                endpoints.MapControllerRoute(
+                    "category",
+                    "{bookCategory}",
+                    new { Controller = "Home", action = "Index", pageNum = 1 });
+
+                // specifies the url to return default syntax for each page with question mark
                 endpoints.MapDefaultControllerRoute();
+
+                endpoints.MapRazorPages(); // Enables use of razor pages (end)
             });
         }
     }

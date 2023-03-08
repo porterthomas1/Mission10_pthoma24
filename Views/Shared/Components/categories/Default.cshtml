@@ -1,0 +1,13 @@
+﻿@{
+}
+
+@model IEnumerable<string>
+
+<a asp-controller="Home" asp-action="Index" asp-route-bookCategory="" asp-route-pageNum="1"
+   class="btn btn-block btn-outline-secondary">Home</a> <!-- Set default route back to page 1 -->
+
+@foreach (string c in Model)
+{
+    <a asp-controller="Home" asp-action="Index" asp-route-bookCategory="@c" asp-route-pageNum="1"
+       class="btn btn-block @(ViewBag.SelectedCategory == c ? "btn-primary" : "btn-outline-secondary")">@c</a> <!-- Shortcut for an if statement -->
+}
