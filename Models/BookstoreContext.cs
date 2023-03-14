@@ -20,6 +20,6 @@ namespace Mission9_pthoma24.Models
         }
 
         public DbSet<Book> Books { get; set; }
-
+        public DbSet<Purchase> Purchases { get; set; }
     }
 }
