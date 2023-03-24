@@ -4,10 +4,18 @@
     <meta name="viewport" content="width=device-width" />
     <title>BookStore</title>
     <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/lib/font-awesome/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="bg-dark text-white p-2 sticky-top">
-        <span class="navbar-brand ml-2">BookStore</span>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col navbar-brand ml-2">BookStore</div>
+                <div class="col-6 text-right">
+                    <vc:cart-summary />
+                </div>
+            </div>
+        </div>
     </div>
     <div class="jumbotron jumbotron-fluid bg-primary">
         <div class="container">

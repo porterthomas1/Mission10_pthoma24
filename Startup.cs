@@ -35,11 +35,15 @@ namespace Mission9_pthoma24
            });
 
             services.AddScoped<IBookstoreRepository, EFBookstoreRepository>();
+            services.AddScoped<IPurchaseRepository, EFPurchaseRepository>();
 
             services.AddRazorPages(); // Enables use of razor pages (start)
 
             services.AddDistributedMemoryCache(); // Sets up the ability for the user to use a session everytime they access the site (start)
             services.AddSession();
+
+            services.AddScoped<Cart>(x => SessionCart.GetCart(x));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

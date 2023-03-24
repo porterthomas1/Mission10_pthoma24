@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace Mission9_pthoma24.Models
         public List<CartLineItem> Items { get; set; } = new List<CartLineItem>();
 
         // Create the function to add a new item to the line item list
-        public void AddItem (Book book, int qty, double price)
+        public virtual void AddItem (Book book, int qty, double price) // "virtual" allows this method to be overridden when we inherit from it
         {
             CartLineItem line = Items
                 .Where(b => b.Book.BookId == book.BookId)
@@ -34,6 +35,16 @@ namespace Mission9_pthoma24.Models
             }
         }
 
+        public virtual void RemoveItem (Book book)
+        {
+            Items.RemoveAll(x => x.Book.BookId == book.BookId);
+        }
+
+        public virtual void ClearCart()
+        {
+            Items.Clear();
+        }
+
         // Calculate total cost of cart
         public double CalculateTotal()
         {
@@ -43,8 +54,9 @@ namespace Mission9_pthoma24.Models
         }
     }
 
-    public class CartLineItem
+    public class CartLineItem // Info for each CartLineItem
     {
+        [Key]
         public int LineID { get; set; }
         public Book Book { get; set; }
         public int Quantity { get; set; }

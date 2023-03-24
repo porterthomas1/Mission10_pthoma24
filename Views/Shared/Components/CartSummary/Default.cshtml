@@ -1,0 +1,23 @@
+﻿@{
+}
+
+<!--Displays a button with the Font Awesome cart icon and, 
+    if there are items in the cart, provides a snapshot that details the number of items and their total value-->
+
+@model Cart
+<div class="">
+    <!--Only show the quantity & total price of the cart if there's something in the cart-->
+    @if (Model.Items.Count() > 0)
+    {
+        <small class="navbar-text">
+            <b>Your cart:</b>
+            @Model.Items.Sum(x => x.Quantity) item(s) <!--Number of items currently in cart-->
+            @Model.CalculateTotal().ToString("c") <!--Current total price of cart-->
+        </small>
+    }
+
+    <!--Add the cart button icon to the navbar-->
+    <a class="btn btn-sm btn-secondary navbar-btn" asp-page="/Buy">
+        <i class="fa fa-shopping-cart"></i>
+    </a>
+</div>

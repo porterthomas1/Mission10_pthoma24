@@ -12,34 +12,36 @@ namespace Mission9_pthoma24.Pages
     public class BuyModel : PageModel
     {
         private IBookstoreRepository repo { get; set; }
-
-        public BuyModel (IBookstoreRepository temp)
-        {
-            repo = temp;
-        }
-
         public Cart cart { get; set; }
         public string ReturnUrl { get; set; }
-        public void OnGet(string returnUrl) // Enable return url (start)
+        public BuyModel (IBookstoreRepository temp, Cart c) // Initialize the instance of a cart
         {
-            ReturnUrl = returnUrl ?? "/";  // Enable return url (end)
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(); // "??" means that if the cart is not null, do the left side, otherwise do the right side
+            repo = temp;
+            cart = c;
+        }
+
+        public void OnGet(string returnUrl) // Enable return url
+        {
+            ReturnUrl = returnUrl ?? "/";
         }
 
         // User posts data
-        public IActionResult OnPost(int bookId, string returnUrl) // enable return url (start)
+        public IActionResult OnPost(int bookId, string returnUrl) // Enable return url
         {
             Book b = repo.Books.FirstOrDefault(x => x.BookId == bookId);
 
-            // Search for session. If no session is found (is null), then create a new cart
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
             // Add the item to the cart
             cart.AddItem(b, 1, b.Price);
 
-            // Set the json file so that cart is retained from page to page
-            HttpContext.Session.SetJson("cart", cart);
+            return RedirectToPage(new { ReturnUrl = returnUrl });
+        }
 
-            return RedirectToPage(new { ReturnUrl = returnUrl }); // Enable return url (end) 
+        // User removes data
+        public IActionResult OnPostRemove (int bookId, string returnUrl)
+        {
+            cart.RemoveItem(cart.Items.First(x => x.Book.BookId == bookId).Book); // Find the BookIds that match first and then the book accosiated with each Id
+
+            return RedirectToPage(new { ReturnUrl = returnUrl });
         }
     }
 }
